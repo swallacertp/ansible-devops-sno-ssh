@@ -1,5 +1,6 @@
 ---
 # 1. Failure conditions
+# Note that added SSH keyfile to generate for AWS installs
 # -----------------------------------------------------------------------------
 - name: "ipi : Fail if required parameters are not provided"
   assert:
@@ -8,6 +9,7 @@
       - ocp_version is defined and ocp_version != ""
       - ipi_base_domain is defined and ipi_base_domain != ""
       - ipi_pull_secret_file is defined and ipi_pull_secret_file != ""
+      - ipi_ssh_key_file is defined and ipi_ssh_key_file != ""
     fail_msg: "One or more required parameters are not defined"
 
 - name: "ipi : Check ipi_pull_secret_file"
@@ -57,6 +59,7 @@
   when: ipi_platform == "gcp"
 
 # 2. Debug Info
+# Note added IPI SSH keyfile
 # -----------------------------------------------------------------------------
 - name: "ipi : Debug information"
   debug:
@@ -74,6 +77,7 @@
       - " + Control Plane Replicas .............. {{ ipi_controlplane_replicas }}"
       - ""
       - "Pull Secret File ....................... {{ ipi_pull_secret_file }}"
+      - "SSH Key File ........................... {{ ipi_ssh_key_file }}"
       - "IPI Directory .......................... {{ ipi_dir }}"
       - ""
       - "OpenShift Installer Directory .......... {{ ocp_installer_dir }}"
@@ -140,6 +144,17 @@
     state: directory
     mode: '755'
   when: not sno_config_directory.stat.exists
+
+# Generate SSH keyfile for ability to access the node(s)
+# Remove existing key file
+- name: Remove existing SSH key pair
+  file:
+    path: "{{ ipi_config_dir }}/{{ipi_ssh_key_file}}"
+    state: absent
+# Create ssh key pair
+- name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
+  community.crypto.openssh_keypair:
+    path: "{{ ipi_config_dir }}/{{ipi_ssh_key_file}}"
 
 - name: "ipi : Build the install-config.yaml"
   ansible.builtin.template:

@@ -91,3 +91,7 @@ ipi_config_dir: "{{ ipi_dir }}/config/{{ cluster_name }}"
 
 ocp_installer_dir: "{{ ipi_dir }}/installer/{{ ocp_version }}"
 ocp_installer_exe: "{{ ipi_dir }}/installer/{{ ocp_version }}/openshift-install"
+
+# Added two variables to support ssh keyfile generation and addition to the install-config.yaml (tested on AWS)
+ipi_ssh_key_file: "{{ lookup('env', 'IPI_SSH_KEY_FILE') | default('sno_rsa', True) }}"
+ipi_ssh_key_pub: "{{ ipi_config_dir }}/{{ ipi_ssh_key_file }}.pub"

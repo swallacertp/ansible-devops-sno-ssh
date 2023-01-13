@@ -77,7 +77,7 @@
       - " + Control Plane Replicas .............. {{ ipi_controlplane_replicas }}"
       - ""
       - "Pull Secret File ....................... {{ ipi_pull_secret_file }}"
-      - "SSH Key File ........................... {{ ipi_ssh_key_file }}"
+      - "SSH Key File ........................... {{ ipi_config_dir }}/{{ ipi_ssh_key_file }}"
       - "IPI Directory .......................... {{ ipi_dir }}"
       - ""
       - "OpenShift Installer Directory .......... {{ ocp_installer_dir }}"
@@ -191,6 +191,7 @@
       - "Login Server ........................... {{ login_server }}"
       - "Login User ............................. {{ login_user }}"
       - "Login Password ......................... {{ login_password }}"
+      - "SSH Key File ........................... {{ ipi_config_dir }}/{{ ipi_ssh_key_file }}"
 
 - name: "ipi : oc login"
   shell: |

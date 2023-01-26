@@ -31,4 +31,7 @@ platform:
 {% endif %}
 publish: External
 pullSecret: '{{ lookup('file', ipi_pull_secret_file) | regex_replace('\'', '"') }}'
-sshKey: '{{ lookup('file', ipi_ssh_key_pub) | regex_replace('\'', '"') }}'
+{% if ipi_ssh_key_pub == '' %}
+    sshKey: '{{ lookup('file', ipi_ssh_key_pub) | regex_replace('\'', '"') }}'
+{% endif %}
+

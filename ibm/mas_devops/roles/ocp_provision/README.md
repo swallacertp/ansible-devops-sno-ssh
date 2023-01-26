@@ -1,6 +1,6 @@
 ocp_provision
 ===============================================================================
-scott
+
 Provision OCP cluster on DevIT Fyre or IBM Cloud ROKS.
 
 Role Variables
